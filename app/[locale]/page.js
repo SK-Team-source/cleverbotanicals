@@ -2,25 +2,37 @@ import Link from 'next/link';
 import { getProducts, collections } from '../../lib/shopify';
 import { t } from '../../lib/i18n';
 import ProductCard from '../../components/ProductCard';
+import HeroCarousel from '../../components/HeroCarousel';
 
 export default async function Home({ params }) {
   const { locale } = await params;
   const d = t(locale);
   const products = await getProducts();
   const featuredCollections = collections.filter((collection) => collection.featured);
+  const heroSlides = [
+    { src: '/autumn-lakeside-banner.png', alt: d.heroBannerAlts[0] },
+    {
+      src: collections.find((collection) => collection.handle === 'oil-concentrates').image,
+      alt: d.heroBannerAlts[1],
+    },
+    {
+      src: collections.find((collection) => collection.handle === 'cbd-flowers-herbs').image,
+      alt: d.heroBannerAlts[2],
+    },
+  ];
 
   return (
     <>
-      <section className="hero">
-        <div className="hero-photo">
-          <img
-            src="/autumn-lakeside-banner.png"
-            alt="Two friends sharing a quiet outdoor moment"
-            fetchPriority="high"
-          />
-        </div>
-        <div className="container hero-grid">
-          <div className="hero-content">
+      <HeroCarousel
+        slides={heroSlides}
+        labels={{
+          carousel: d.heroCarousel,
+          previous: d.previousBanner,
+          next: d.nextBanner,
+          showSlide: d.showBannerSlide,
+        }}
+      >
+        <div className="hero-content">
             <span className="eyebrow light">{d.heroEyebrow}</span>
             <h1>{d.heroTitle} <em>{d.heroTitleEm}</em></h1>
             <p>{d.heroDescription}</p>
@@ -41,13 +53,8 @@ export default async function Home({ params }) {
               <span className="hero-note-mark" aria-hidden="true">✳</span>
               {d.heroNote}
             </div>
-          </div>
-          <div className="hero-image-caption">
-            <span>{d.heroCaption}</span>
-            <span>01 — 04</span>
-          </div>
         </div>
-      </section>
+      </HeroCarousel>
 
       <section className="trust-bar" aria-label={d.commitments}>
         <div className="container trust-bar-inner">
