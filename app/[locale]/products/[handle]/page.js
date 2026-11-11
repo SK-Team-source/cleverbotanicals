@@ -1,6 +1,6 @@
 import { notFound } from 'next/navigation';
 import Link from 'next/link';
-import { getProducts } from '../../../../lib/shopify';
+import { getProduct, getProducts } from '../../../../lib/shopify';
 import { getCurrencyLocale, t } from '../../../../lib/i18n';
 import ProductCard from '../../../../components/ProductCard';
 
